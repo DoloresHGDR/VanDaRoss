@@ -478,3 +478,11 @@ footer {
     -webkit-text-stroke: 0.5px rgb(70, 11, 78);
     color: rgb(76, 8, 90);
   }
+
+
+.bitter-uniquifier {
+  font-family: "Bitter", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}

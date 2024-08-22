@@ -1,25 +1,43 @@
-import React from 'react'
-import {Formik,Form,Field} from 'formik';
-import axios from 'axios'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import UserContext from '../context/UserContext';
+import { Formik, Form, Field } from 'formik';
+import axios from 'axios';
 
-function login() {
-    const initialValues = {
-        name:'',
-        password:''
+
+function Login() {
+
+  const navigate = useNavigate();
+
+  const initialValues = {
+    email:'',
+    password:''
+  }
+
+  const {setUser} = useContext(UserContext);
+
+  const handleForm = async(values) => {
+    try {
+      const response = await axios.post('https://localhost:5000/auth/login', values)
+      console.log(response.data)
+
+      const {role} = response.data
+      console.log(response.data)
+
+      setUser({
+        logged:true,
+        role:role
+      })
+      navigate('/panel')
+    } catch(error) {
+      console.log(error)
+      console.log('estoy en catch')
     }
-    const handleLogin = async (values) => {
-        console.log('Valores desde el front',values)
-        try {
-            const response = await axios.post('http://localhost:5000/login',values)
-            console.log(response.data);
-        } catch (error){
-            console.error(error)
-        }
-    }
+  }
   return (
     <Formik 
         initialValues={initialValues}
-        onSubmit={handleLogin}
+        onSubmit={handleForm}
     >
         <Form>
         <div class="login-box">
@@ -33,7 +51,7 @@ function login() {
                 <label className='labelL'>Password</label>
             </div>
             <center>
-            <a className="btn btn-link btn-floating btn-lg neon-icon m-1 submit aL" onClick={handleLogin}>
+            <a className="btn btn-link btn-floating btn-lg neon-icon m-1 submit aL">
                     Log in
                 <span className='spanL'></span>
             </a></center>
@@ -44,4 +62,4 @@ function login() {
   )
 }
 
-export default login
+export default Login;
